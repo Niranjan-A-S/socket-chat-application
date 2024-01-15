@@ -1,5 +1,11 @@
 import express from 'express';
 import { createServer } from 'http';
+import { startWSServer } from './tasks';
 
 const app = express();
-export const httpServer = createServer(app);
+const httpServer = createServer(app);
+
+startWSServer(httpServer);
+
+export { httpServer };
+
