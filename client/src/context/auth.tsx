@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-function */
-import { FC, ReactNode, createContext, memo, useCallback, useContext, useEffect, useState } from 'react';
-import { IAuthContext, IUser } from '../types';
+import { FC, createContext, memo, useCallback, useContext, useEffect, useState } from 'react';
 import { Loader } from '../components/ui/loader';
+import { IAuthContext, IParentProps, IUser } from '../types';
 import { LocalStorage } from '../utils';
 
 const defaultContextValue: IAuthContext = {
@@ -44,4 +44,5 @@ const AuthProvider: FC<IParentProps> = memo(({ children }) => {
 
 
 // eslint-disable-next-line react-refresh/only-export-components
-export { useAuthInfo, AuthProvider };
+export { AuthProvider, useAuthInfo };
+
