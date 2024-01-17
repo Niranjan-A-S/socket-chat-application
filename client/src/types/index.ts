@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AxiosResponse } from 'axios';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export interface IUser {
     _id?: string;
@@ -24,4 +26,11 @@ export interface ISuccessResponse<T> {
 
 export interface IParentProps {
     children: ReactNode
+}
+
+export interface IRequestHandlerParams<T> {
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
+    request(): Promise<AxiosResponse<ISuccessResponse<T>, any>>
+    onSuccess(data: ISuccessResponse<T>): void;
+    onError(error: any): void;
 }
