@@ -1,8 +1,9 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid';
-import { FC, ReactNode, memo, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+import { IParentProps } from '../types';
 
-export const FormBody: FC<{ children: ReactNode }> = memo(({ children }) => {
+export const FormBody: FC<IParentProps> = memo(({ children }) => {
 
     const { pathname } = useLocation();
     const isLoginForm = useMemo(() => pathname === '/login', [pathname]);

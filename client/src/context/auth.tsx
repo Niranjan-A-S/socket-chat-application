@@ -16,7 +16,7 @@ const AuthContext = createContext<IAuthContext>(defaultContextValue);
 
 const useAuthInfo = () => useContext(AuthContext);
 
-const AuthProvider: FC<{ children: ReactNode }> = memo(({ children }) => {
+const AuthProvider: FC<IParentProps> = memo(({ children }) => {
 
     const [user, setUser] = useState<IUser | null>(null);
     const [token, setToken] = useState<string | null>(null);
