@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, memo } from 'react';
+import { ButtonHTMLAttributes, FC, memo } from 'react';
 import { resolveClassNames } from '../../utils';
 
 interface ICustomButtonProps {
@@ -7,11 +7,11 @@ interface ICustomButtonProps {
     size?: 'base' | 'small';
 }
 
-export const Button: FC<HTMLAttributes<HTMLButtonElement> & ICustomButtonProps> = memo(({ fullWidth, severity, size, children, className, ...rest }) => (
+export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & ICustomButtonProps> = memo(({ fullWidth, severity, size, children, className, ...rest }) => (
     <button
         {...rest}
         className={resolveClassNames(
-            'rounded-full inline-flex flex-shrink-0 justify-center items-center text-center text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white shadow-sm',
+            'rounded-full inline-flex flex-shrink-0 justify-center items-center text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white shadow-sm cursor-pointer',
             fullWidth ? 'w-full' : '',
             severity === 'secondary'
                 ? 'bg-secondary hover:bg-secondary/80 disabled:bg-secondary/50 outline outline-[1px] outline-zinc-400'
