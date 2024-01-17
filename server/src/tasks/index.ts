@@ -11,7 +11,6 @@ export const startWSServer = (_httpServer: Server) => {
             },
             serveClient: false
         });
-        return io;
     } catch (error) {
         console.log('WS Server Connection Error: ', error);
     }
