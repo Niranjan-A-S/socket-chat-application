@@ -1,9 +1,9 @@
 import { FC, memo } from 'react';
 import { PublicRoute } from '../components/route/public-route';
-import { LoginContainer } from '../containers/login';
+import { RegisterContainer } from '../containers/register';
 
-export const LoginPage: FC = memo(() => (
+export const RegisterPage: FC = memo(() => (
     <PublicRoute>
-        <LoginContainer />
+        <RegisterContainer />
     </PublicRoute>
 ));
