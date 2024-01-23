@@ -2,7 +2,8 @@
 import { FC, createContext, memo, useCallback, useContext, useEffect, useState } from 'react';
 import { Loader } from '../components/ui/loader';
 import { IAuthContext, IParentProps, IUser } from '../types';
-import { LocalStorage } from '../utils';
+import { LocalStorage, requestHandler } from '../utils';
+import { loginUser, registerUser } from '../api/client';
 
 const defaultContextValue: IAuthContext = {
     token: null,
@@ -33,8 +34,33 @@ const AuthProvider: FC<IParentProps> = memo(({ children }) => {
         setIsLoading(false);
     }, []);
 
-    const login = useCallback(async (payload: Omit<IUser, 'email'>) => { }, []);
-    const register = useCallback(async (payload: IUser) => { }, []);
+    const login = useCallback(async (payload: Omit<IUser, 'email' | '_id'>) => {
+        await requestHandler<Omit<IUser, 'email' | '_id'>>({
+            setIsLoading,
+            request: async () => await loginUser(payload),
+            onSuccess: (res) => {
+                console.log(res);
+            },
+            onError: (error) => {
+                console.error(error);
+            }
+        }
+        );
+    }, []);
+
+    const register = useCallback(async (payload: Omit<IUser, '_id'>) => {
+        await requestHandler<Omit<IUser, 'email' | '_id'>>({
+            setIsLoading,
+            request: async () => await registerUser(payload),
+            onSuccess: (res) => {
+                console.log(res);
+            },
+            onError: (error) => {
+                console.error(error);
+            }
+        }
+        );
+    }, []);
     const logout = useCallback(async () => { }, []);
 
     return <AuthContext.Provider value={{ token, user, login, register, logout }}>
