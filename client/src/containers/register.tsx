@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useFormState } from '../hooks/use-form-state';
 import { IUser } from '../types';
+import { useAuthInfo } from '../context/auth';
 
 const defaultValue: IUser = {
     email: '',
@@ -13,13 +14,20 @@ const defaultValue: IUser = {
 
 export const RegisterContainer: FC = memo(() => {
 
-    const { formState: { email, password, username }, onChange } = useFormState<IUser>(defaultValue);
+    const { formState, onChange } = useFormState<Omit<IUser, '_id'>>(defaultValue);
+    const { register } = useAuthInfo();
+
+    const { email, password, username } = useMemo(() => formState, [formState]);
 
     const inputFieldsMetaData = useMemo<InputHTMLAttributes<HTMLInputElement>[]>(() => [
         { placeholder: 'Email', type: 'email', name: 'email', value: email },
         { placeholder: 'Username', type: 'username', name: 'username', value: username },
         { placeholder: 'Password', type: 'password', name: 'password', value: password }
     ], [email, password, username]);
+
+    const handleRegister = useCallback(async () => {
+        await register(formState);
+    }, [formState, register]);
 
     const renderInputField = useCallback(({ placeholder, type, value, name }: InputHTMLAttributes<HTMLInputElement>) =>
         <Input
@@ -34,6 +42,6 @@ export const RegisterContainer: FC = memo(() => {
     return (
         <FormBody>
             {inputFieldsMetaData.map(renderInputField)}
-            <Button fullWidth>Register</Button>
+            <Button fullWidth onClick={handleRegister}>Register</Button>
         </FormBody>);
 });
