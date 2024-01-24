@@ -8,3 +8,9 @@ export enum AvailableRoles {
 
 export const AVATAR_PLACEHOLDER = 'https://via.placeholder.com/200x200.png';
 export const AVATAR_LOCAL_PATH = '';
+
+export enum AVAILABLE_SOCIAL_LOGINS {
+    GOOGLE = 'GOOGLE',
+    GITHUB = 'GITHUB',
+    EMAIL_PASSWORD = 'EMAIL_PASSWORD',
+}
