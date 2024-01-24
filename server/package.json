@@ -4,7 +4,7 @@
   "description": "A chat application using socket.io and react.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts",
+    "dev": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts,.js"
   },
   "author": "Niranjan A S",
@@ -15,7 +15,6 @@
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
@@ -23,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "express-validator": "^7.0.1",
     "mongoose": "^8.0.4",
     "socket.io": "^4.7.4"

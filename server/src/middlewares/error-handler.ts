@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ErrorRequestHandler, NextFunction } from 'express';
-import { ApiError } from '../utils/api-error';
+import { APIError } from '../utils/api-error';
 import mongoose from 'mongoose';
 
 export const errorHandler: ErrorRequestHandler = (
@@ -12,10 +12,10 @@ export const errorHandler: ErrorRequestHandler = (
 ) => {
     let error = err;
 
-    if (!(error instanceof ApiError)) {
+    if (!(error instanceof APIError)) {
         const statusCode = error.statusCode || error instanceof mongoose.Error ? 400 : 400;
         const message = error.message || 'Something went wrong';
-        error = new ApiError(statusCode, message, error?.errors || [], err.stack);
+        error = new APIError(statusCode, message, error?.errors || [], err.stack);
     }
 
     const response = {

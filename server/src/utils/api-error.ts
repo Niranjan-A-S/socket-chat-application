@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export class ApiError extends Error {
+export class APIError extends Error {
     success: boolean;
     statusCode: number;
     data: null | any;
