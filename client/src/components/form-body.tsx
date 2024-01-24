@@ -1,4 +1,3 @@
-import { LockClosedIcon } from '@heroicons/react/20/solid';
 import { FC, memo, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { IParentProps } from '../types';
@@ -10,23 +9,23 @@ export const FormBody: FC<IParentProps> = memo(({ children }) => {
     const footer = useMemo(() => (isLoginForm
         ? <>
             Don&apos;t have an account?{' '}
-            <a href='/register'>
+            <a href="/register" className="nav-link">
                 Register
             </a>
         </>
         : <>
             Already have an account?{' '}
-            <a href="/login">
+            <a href="/login" className="nav-link">
                 Login
             </a>
         </>
     ), [isLoginForm]);
 
-    return <div>
+    return <div className="container">
         <h1>Chat Application</h1>
-        <div>
+        <div className="form-container">
             <h1>
-                <LockClosedIcon /> {isLoginForm ? 'Login' : 'Register'}
+                {isLoginForm ? 'Login' : 'Register'}
             </h1>
             {children}
             <small>

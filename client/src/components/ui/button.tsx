@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, FC, memo } from 'react';
+import { resolveClassNames } from '../../utils';
 
 interface ICustomButtonProps {
     fullWidth?: boolean;
@@ -8,6 +9,7 @@ interface ICustomButtonProps {
 
 export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & ICustomButtonProps> = memo(({ fullWidth, severity, size, children, className, ...rest }) => (
     <button
+        className={resolveClassNames('button', className || '')}
         {...rest}
     >
         {children}
