@@ -5,6 +5,7 @@ import { Input } from '../components/ui/input';
 import { useFormState } from '../hooks/use-form-state';
 import { IUser } from '../types';
 import { useAuthInfo } from '../context/auth';
+import { checkIfButtonDisabled } from '../utils';
 
 const defaultValue: IUser = {
     email: '',
@@ -39,9 +40,11 @@ export const RegisterContainer: FC = memo(() => {
             onChange={onChange}
         />, [onChange]);
 
+    const isButtonDisabled = useMemo(() => checkIfButtonDisabled(formState), [formState]);
+
     return (
         <FormBody>
             {inputFieldsMetaData.map(renderInputField)}
-            <Button fullWidth onClick={handleRegister}>Register</Button>
+            <Button fullWidth onClick={handleRegister} disabled={isButtonDisabled}>Register</Button>
         </FormBody>);
 });

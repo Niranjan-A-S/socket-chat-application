@@ -9,7 +9,7 @@ interface ICustomButtonProps {
 
 export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & ICustomButtonProps> = memo(({ fullWidth, severity, size, children, className, ...rest }) => (
     <button
-        className={resolveClassNames('button', className || '')}
+        className={resolveClassNames('button', rest.disabled ? 'button-disabled' : '', className || '')}
         {...rest}
     >
         {children}

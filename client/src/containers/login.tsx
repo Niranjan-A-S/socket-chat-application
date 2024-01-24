@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useFormState } from '../hooks/use-form-state';
 import { IUser } from '../types';
+import { checkIfButtonDisabled } from '../utils';
 
 const defaultValue: IUser = {
     email: '',
@@ -31,11 +32,13 @@ export const LoginContainer: FC = memo(() => {
             onChange={onChange}
         />, [onChange]);
 
+    const isButtonDisabled = useMemo(() => checkIfButtonDisabled(formState), [formState]);
+
     return (
         <FormBody>
             {inputFieldsMetaData.map(renderInputField)}
             <Button
-                disabled={Object.values(formState).some((val) => !val)}
+                disabled={isButtonDisabled}
                 fullWidth
             >
                 Login

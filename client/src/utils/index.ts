@@ -58,3 +58,5 @@ export const requestHandler = async <T>({
         if (setIsLoading) setIsLoading(false);
     }
 };
+
+export const checkIfButtonDisabled = (data: any) => Object.values(data).some(val => !val);
