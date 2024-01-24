@@ -24,7 +24,7 @@ export const FormBody: FC<IParentProps> = memo(({ children }) => {
     return <div className="container">
         <h1>Chat Application</h1>
         <div className="form-container">
-            <h1>
+            <h1 className="form-heading">
                 {isLoginForm ? 'Login' : 'Register'}
             </h1>
             {children}
