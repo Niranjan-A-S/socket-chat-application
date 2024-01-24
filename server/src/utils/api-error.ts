@@ -1,3 +1,5 @@
+import { Messages } from '../constants/messages';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class APIError extends Error {
     success: boolean;
@@ -7,7 +9,7 @@ export class APIError extends Error {
 
     constructor(
         statusCode: number,
-        message = 'Something went wrong',
+        message: string = Messages.COMMON_ERROR_MESSAGE,
         errors = [],
         stack = ''
     ) {
