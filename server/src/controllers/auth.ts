@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { IRegisterRequest } from '../types/api';
 import { APIError } from '../utils/api-error';
 import { APIResponse } from '../utils/api-response';
+import { getHashedString } from '../utils/crypto';
 import { emailVerificationMailgenContent, getVerificationUrl, sendMail } from '../utils/mail';
 
 export const registerUser = asyncHandler(async (req: IRegisterRequest, res: Response) => {
@@ -36,11 +37,44 @@ export const registerUser = asyncHandler(async (req: IRegisterRequest, res: Resp
         )
     });
 
-    res.status(201).json(new APIResponse(
-        200,
-        Messages.USER_REGISTRATION_SUCCESSFUL,
-        { user }
-    ));
+    const createdUser = await User.findById(user._id).select(
+        '-password -refreshToken -emailVerificationToken -emailVerificationExpiry'
+    );
+    if (!createdUser) throw new APIError(500, Messages.USER_REGISTRATION_FAILED);
+
+    res
+        .status(201)
+        .json(new APIResponse(
+            200,
+            Messages.USER_REGISTRATION_SUCCESSFUL,
+            { user: createdUser }
+        ));
+});
+
+export const verifyEmail = asyncHandler(async (req, res) => {
+    const { verificationToken } = req.params;
+    if (!verificationToken) throw new APIError(400, Messages.EMAIL_VERIFICATION_TOKEN_MISSING);
+
+    const hashedToken = getHashedString(verificationToken);
+
+    const user = await User.findOne({
+        emailVerificationToken: hashedToken,
+        emailVerificationExpiry: { $gt: Date.now() }
+    });
+
+    if (!user) throw new APIError(489, Messages.INVALID_EMAIL_VERIFICATION_TOKEN);
+
+    user.emailVerificationExpiry = undefined;
+    user.emailVerificationToken = undefined;
+    user.isEmailVerified = true;
+
+    await user.save({ validateBeforeSave: false });
+    res
+        .status(201)
+        .json(new APIResponse(
+            200,
+            Messages.EMAIL_VERIFIED,
+            { isEmailVerified: true }));
 });
 
 export const loginUser: RequestHandler = async (req, res) => res.send('Login User');

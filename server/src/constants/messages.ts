@@ -17,5 +17,9 @@ export enum Messages {
     INVALID_DATA = 'Received data is Invalid.',
     ACCESS_TOKEN_OPTIONS_MISSING = 'Access Token Options are missing in the server configuration.',
     REFRESH_TOKEN_OPTIONS_MISSING = 'RefreshToken Options are missing in the server configuration.',
-    FAILED_TO_SEND_MAIL = 'Email service failed silently. Make sure you have provided your MAILTRAP credentials in the .env file'
+    FAILED_TO_SEND_MAIL = 'Email service failed silently. Make sure you have provided your MAILTRAP credentials in the .env file',
+    EMAIL_VERIFIED = 'Email is Verified.',
+    EMAIL_VERIFICATION_TOKEN_MISSING = 'Email verification token is missing.',
+    INVALID_EMAIL_VERIFICATION_TOKEN = 'Email verification token is invalid.',
+    USER_REGISTRATION_FAILED = 'Something went wrong while registering the user.'
 }

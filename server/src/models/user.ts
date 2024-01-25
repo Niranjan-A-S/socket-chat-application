@@ -1,10 +1,9 @@
-import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
 import { Schema, model } from 'mongoose';
 import { USER_TEMPORARY_TOKEN_EXPIRY } from '../constants/auth';
 import { AVAILABLE_SOCIAL_LOGINS, AVATAR_LOCAL_PATH, AVATAR_PLACEHOLDER, AvailableRoles } from '../constants/db';
 import { Messages } from '../constants/messages';
+import { comparePassword, getHashedString, getJWT, hashPassword } from '../utils/crypto';
 
 
 const userSchema = new Schema(
@@ -62,12 +61,12 @@ const userSchema = new Schema(
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await hashPassword(this.password);
     next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password: string) {
-    return await bcrypt.compare(password, this.password);
+    return await comparePassword(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
@@ -76,7 +75,7 @@ userSchema.methods.generateAccessToken = function () {
     if (!secret || !expiresIn) {
         throw new Error(Messages.ACCESS_TOKEN_OPTIONS_MISSING);
     }
-    return jwt.sign(
+    return getJWT(
         {
             _id: this._id,
             username: this.username,
@@ -94,7 +93,7 @@ userSchema.methods.generateRefreshToken = function () {
     if (!secret || !expiresIn) {
         throw new Error(Messages.REFRESH_TOKEN_OPTIONS_MISSING);
     }
-    return jwt.sign(
+    return getJWT(
         { _id: this._id },
         secret,
         { expiresIn }
@@ -104,10 +103,7 @@ userSchema.methods.generateRefreshToken = function () {
 userSchema.methods.generateTemporaryToken = function () {
     const unHashedToken = crypto.randomBytes(20).toString('hex');
 
-    const hashedToken = crypto
-        .createHash('sha256')
-        .update(unHashedToken)
-        .digest('hex');
+    const hashedToken = getHashedString(unHashedToken);
 
     const tokenExpiry = Date.now() + USER_TEMPORARY_TOKEN_EXPIRY;
 
