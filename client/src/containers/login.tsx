@@ -2,20 +2,22 @@ import { FC, InputHTMLAttributes, memo, useCallback, useMemo } from 'react';
 import { FormBody } from '../components/form-body';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { useAuthInfo } from '../context/auth';
 import { useFormState } from '../hooks/use-form-state';
 import { IUser } from '../types';
 import { checkIfButtonDisabled } from '../utils';
 
-const defaultValue: IUser = {
-    email: '',
-    password: '',
-    username: ''
+const defaultValue: Omit<IUser, 'email'> = {
+    password: 'Pass@word1',
+    username: 'niranjan2602'
 };
 
 export const LoginContainer: FC = memo(() => {
 
     const { formState, onChange } = useFormState<Omit<IUser, 'email'>>(defaultValue);
     const { password, username } = useMemo(() => formState, [formState]);
+
+    const { login } = useAuthInfo();
 
     const inputFieldsMetaData = useMemo<InputHTMLAttributes<HTMLInputElement>[]>(() => [
         { placeholder: 'Username', type: 'username', name: 'username', value: username },
@@ -34,12 +36,17 @@ export const LoginContainer: FC = memo(() => {
 
     const isButtonDisabled = useMemo(() => checkIfButtonDisabled(formState), [formState]);
 
+    const handleLogin = useCallback(async () => {
+        await login(formState);
+    }, [formState, login]);
+
     return (
         <FormBody>
             {inputFieldsMetaData.map(renderInputField)}
             <Button
                 disabled={isButtonDisabled}
                 fullWidth
+                onClick={handleLogin}
             >
                 Login
             </Button>

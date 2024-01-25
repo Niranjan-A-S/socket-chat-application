@@ -1,9 +1,11 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-empty-function */
 import { FC, createContext, memo, useCallback, useContext, useEffect, useState } from 'react';
 import { Loader } from '../components/ui/loader';
 import { IAuthContext, IParentProps, IUser } from '../types';
 import { LocalStorage, requestHandler } from '../utils';
 import { loginUser, registerUser } from '../api/client';
+import { useNavigate } from 'react-router-dom';
 
 const defaultContextValue: IAuthContext = {
     token: null,
@@ -18,6 +20,8 @@ const AuthContext = createContext<IAuthContext>(defaultContextValue);
 const useAuthInfo = () => useContext(AuthContext);
 
 const AuthProvider: FC<IParentProps> = memo(({ children }) => {
+
+    const navigate = useNavigate();
 
     const [user, setUser] = useState<IUser | null>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -41,9 +45,7 @@ const AuthProvider: FC<IParentProps> = memo(({ children }) => {
             onSuccess: (res) => {
                 console.log(res);
             },
-            onError: (error) => {
-                console.error(error);
-            }
+            onError: alert
         }
         );
     }, []);
@@ -52,15 +54,15 @@ const AuthProvider: FC<IParentProps> = memo(({ children }) => {
         await requestHandler<Omit<IUser, 'email' | '_id'>>({
             setIsLoading,
             request: async () => await registerUser(payload),
-            onSuccess: (res) => {
-                console.log(res);
+            onSuccess: () => {
+                alert('Account created successfully! Go ahead and login.');
+                navigate('/login');
             },
-            onError: (error) => {
-                console.error(error);
-            }
+            onError: alert
         }
         );
-    }, []);
+    }, [navigate]);
+
     const logout = useCallback(async () => { }, []);
 
     return <AuthContext.Provider value={{ token, user, login, register, logout }}>

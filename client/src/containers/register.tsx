@@ -8,9 +8,9 @@ import { useAuthInfo } from '../context/auth';
 import { checkIfButtonDisabled } from '../utils';
 
 const defaultValue: IUser = {
-    email: '',
-    password: '',
-    username: ''
+    email: 'niranjan0881@gmail.com',
+    password: 'Pass@word1',
+    username: 'niranjan2602'
 };
 
 export const RegisterContainer: FC = memo(() => {

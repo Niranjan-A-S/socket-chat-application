@@ -9,6 +9,11 @@ export const userRegisterValidator = [
     body('username').trim().notEmpty().withMessage(Messages.USERNAME_REQUIRED).isLowercase().withMessage(Messages.USERNAME_LOWERCASE).isLength({ min: 3 }).withMessage(Messages.USERNAME_LENGTH),
     body('password').trim().notEmpty().withMessage(Messages.PASSWORD_REQUIRED)
 ];
+export const userLoginValidator = [
+    body('email').optional().isEmail().withMessage(Messages.EMAIL_INVALID),
+    body('username').notEmpty().withMessage(Messages.USERNAME_REQUIRED),
+    body('password').notEmpty().withMessage(Messages.PASSWORD_REQUIRED)
+];
 
 export const validate: RequestHandler = (req, _res, next) => {
     const errors = validationResult(req);
