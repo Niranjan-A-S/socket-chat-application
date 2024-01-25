@@ -14,5 +14,8 @@ export enum Messages {
     USERNAME_REQUIRED = 'Username is Required.',
     USERNAME_LENGTH = 'Username must be at least 3 characters long.',
     USERNAME_LOWERCASE = 'Username must be lowercase.',
-    INVALID_DATA = 'Received data is Invalid.'
+    INVALID_DATA = 'Received data is Invalid.',
+    ACCESS_TOKEN_OPTIONS_MISSING = 'Access Token Options are missing in the server configuration.',
+    REFRESH_TOKEN_OPTIONS_MISSING = 'RefreshToken Options are missing in the server configuration.',
+    FAILED_TO_SEND_MAIL = 'Email service failed silently. Make sure you have provided your MAILTRAP credentials in the .env file'
 }

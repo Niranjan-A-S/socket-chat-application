@@ -1,10 +1,10 @@
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 import { Schema, model } from 'mongoose';
+import { USER_TEMPORARY_TOKEN_EXPIRY } from '../constants/auth';
 import { AVAILABLE_SOCIAL_LOGINS, AVATAR_LOCAL_PATH, AVATAR_PLACEHOLDER, AvailableRoles } from '../constants/db';
 import { Messages } from '../constants/messages';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import { REFRESH_TOKEN_SECRET, REFRESH_TOKEN_EXPIRY, ACCESS_TOKEN_EXPIRY, ACCESS_TOKEN_SECRET, USER_TEMPORARY_TOKEN_EXPIRY } from '../constants/auth';
 
 
 const userSchema = new Schema(
@@ -71,6 +71,11 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
 };
 
 userSchema.methods.generateAccessToken = function () {
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    const expiresIn = process.env.ACCESS_TOKEN_EXPIRY;
+    if (!secret || !expiresIn) {
+        throw new Error(Messages.ACCESS_TOKEN_OPTIONS_MISSING);
+    }
     return jwt.sign(
         {
             _id: this._id,
@@ -78,16 +83,21 @@ userSchema.methods.generateAccessToken = function () {
             email: this.email,
             role: this.role
         },
-        process.env.ACCESS_TOKEN_SECRET || ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY || ACCESS_TOKEN_EXPIRY }
+        secret,
+        { expiresIn }
     );
 };
 
 userSchema.methods.generateRefreshToken = function () {
+    const secret = process.env.REFRESH_TOKEN_SECRET;
+    const expiresIn = process.env.REFRESH_TOKEN_EXPIRY;
+    if (!secret || !expiresIn) {
+        throw new Error(Messages.REFRESH_TOKEN_OPTIONS_MISSING);
+    }
     return jwt.sign(
         { _id: this._id },
-        process.env.REFRESH_TOKEN_SECRET || REFRESH_TOKEN_SECRET,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY || REFRESH_TOKEN_EXPIRY }
+        secret,
+        { expiresIn }
     );
 };
 
