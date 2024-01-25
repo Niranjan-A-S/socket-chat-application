@@ -1,11 +1,11 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-empty-function */
 import { FC, createContext, memo, useCallback, useContext, useEffect, useState } from 'react';
-import { Loader } from '../components/ui/loader';
-import { IAuthContext, IParentProps, IUser } from '../types';
-import { LocalStorage, requestHandler } from '../utils';
-import { loginUser, registerUser } from '../api/client';
 import { useNavigate } from 'react-router-dom';
+import { loginUser, registerUser } from '../api/client';
+import { Loader } from '../components/ui/loader';
+import { IAuthContext, ILoginResponse, IParentProps, IUser } from '../types';
+import { LocalStorage, requestHandler } from '../utils';
 
 const defaultContextValue: IAuthContext = {
     token: null,
@@ -32,23 +32,28 @@ const AuthProvider: FC<IParentProps> = memo(({ children }) => {
         const _token = LocalStorage.getItem('token');
         const _user = LocalStorage.getItem('user');
         if (_token && _user) {
-            setToken(_token);
+            setToken(_token.accessToken);
             setUser(_user);
         }
         setIsLoading(false);
     }, []);
 
     const login = useCallback(async (payload: Omit<IUser, 'email' | '_id'>) => {
-        await requestHandler<Omit<IUser, 'email' | '_id'>>({
+        await requestHandler<ILoginResponse>({
             setIsLoading,
             request: async () => await loginUser(payload),
             onSuccess: (res) => {
-                console.log(res);
+                const { accessToken, user } = res.data;
+                setUser(user);
+                setToken(accessToken);
+                LocalStorage.setItem('user', user);
+                LocalStorage.setItem('token', { accessToken });
+                navigate('/chat');
             },
             onError: alert
         }
         );
-    }, []);
+    }, [navigate]);
 
     const register = useCallback(async (payload: Omit<IUser, '_id'>) => {
         await requestHandler<Omit<IUser, 'email' | '_id'>>({

@@ -21,5 +21,10 @@ export enum Messages {
     EMAIL_VERIFIED = 'Email is Verified.',
     EMAIL_VERIFICATION_TOKEN_MISSING = 'Email verification token is missing.',
     INVALID_EMAIL_VERIFICATION_TOKEN = 'Email verification token is invalid.',
-    USER_REGISTRATION_FAILED = 'Something went wrong while registering the user.'
+    USER_REGISTRATION_FAILED = 'Something went wrong while registering the user.',
+    USER_NOT_FOUND = 'User does not exist.',
+    USER_CREDENTIALS_REQUIRED = 'Either username or email is required.',
+    INVALID_CREDENTIALS = 'Invalid user credentials',
+    USER_LOGIN_SUCCESSFUL = 'User logged in successfully',
+    ACCESS_TOKEN_ERROR = 'Something went wrong while generating the access token'
 }

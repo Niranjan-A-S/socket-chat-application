@@ -5,8 +5,8 @@ export const resolveClassNames = (...classNames: string[]) => classNames.filter(
 
 export const isBrowser = typeof window !== 'undefined';
 
-export class LocalStorage {
-    static getItem(key: string) {
+export const LocalStorage = {
+    getItem(key: string) {
         if (!isBrowser) return;
         const value = localStorage.getItem(key);
         if (value) {
@@ -17,23 +17,24 @@ export class LocalStorage {
             }
         }
         return null;
-    }
+    },
 
-    static setItem(key: string, value: any) {
+    setItem(key: string, value: any) {
         if (!isBrowser) return;
-        localStorage.setItem(key, value);
-    }
+        const valueToSet = typeof value === 'string' ? value : JSON.stringify(value);
+        localStorage.setItem(key, valueToSet);
+    },
 
-    static remove(key: string) {
+    remove(key: string) {
         if (!isBrowser) return;
         localStorage.removeItem(key);
-    }
+    },
 
-    static clear() {
+    clear() {
         if (!isBrowser) return;
         localStorage.clear();
     }
-}
+};
 
 export const requestHandler = async <T>({
     setIsLoading,

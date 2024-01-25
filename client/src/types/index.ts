@@ -34,3 +34,8 @@ export interface IRequestHandlerParams<T> {
     onSuccess(data: ISuccessResponse<T>): void;
     onError(error: any): void;
 }
+
+export interface ILoginResponse {
+    user: IUser;
+    accessToken: string;
+}

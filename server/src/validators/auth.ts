@@ -11,7 +11,7 @@ export const userRegisterValidator = [
 ];
 export const userLoginValidator = [
     body('email').optional().isEmail().withMessage(Messages.EMAIL_INVALID),
-    body('username').notEmpty().withMessage(Messages.USERNAME_REQUIRED),
+    body('username').optional(),
     body('password').notEmpty().withMessage(Messages.PASSWORD_REQUIRED)
 ];
 
