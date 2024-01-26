@@ -8,8 +8,8 @@ import { IUser } from '../types';
 import { checkIfButtonDisabled } from '../utils';
 
 const defaultValue: Omit<IUser, 'email'> = {
-    password: 'Pass@word1',
-    username: 'niranjan2602'
+    password: '',
+    username: ''
 };
 
 export const LoginContainer: FC = memo(() => {
